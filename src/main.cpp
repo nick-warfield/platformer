@@ -7,20 +7,17 @@ int main()
     sf::RenderWindow window(sf::VideoMode(800, 600), "SFML window");
     // Load a sprite to display
     sf::Texture texture;
-    if (!texture.loadFromFile("cute_image.jpg"))
+    if (!texture.loadFromFile("./resources/Knight/noBKG_KnightIdle_strip.png"))
         return EXIT_FAILURE;
     sf::Sprite sprite(texture);
-    // Create a graphical text to display
-    sf::Font font;
-    if (!font.loadFromFile("arial.ttf"))
-        return EXIT_FAILURE;
-    sf::Text text("Hello SFML", font, 50);
+
     // Load a music to play
     sf::Music music;
-    if (!music.openFromFile("nice_music.ogg"))
+    if (!music.openFromFile("resources/Shapeforms/Dystopia – Ambience and Drone Preview/AUDIO/AMBIENCE_SIGNAL_LOOP.wav"))
         return EXIT_FAILURE;
     // Play the music
     music.play();
+
     // Start the game loop
     while (window.isOpen())
     {
@@ -36,8 +33,6 @@ int main()
         window.clear();
         // Draw the sprite
         window.draw(sprite);
-        // Draw the string
-        window.draw(text);
         // Update the window
         window.display();
     }

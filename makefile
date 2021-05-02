@@ -1,6 +1,5 @@
 BINARY_NAME = platformer
-CC = g++
-#CC = ccache clang++
+CC = ccache clang++
 OPT = O2
 
 CFLAGS = -std=c++17 -$(OPT) -Wall -Wextra -Wno-missing-braces -DDEBUG
