@@ -1,58 +1,93 @@
+#include <memory>
+
 #include <SFML/System.hpp>
 #include <SFML/Graphics.hpp>
 
-const sf::Color TETRIMINO_L_COLOR = sf::Color::Red;
-const sf::Vector2<int> TETRIMINO_L[4] = {
-	sf::Vector2<int>(-1,  0),
-	sf::Vector2<int>( 0,  0),
-	sf::Vector2<int>( 1,  0),
-	sf::Vector2<int>( 1,  1)
+#include "TetriminoData.hpp"
+
+struct Block {
+	sf::Vector2<int> position;
+	std::shared_ptr<sf::Texture> image;
+	sf::Color color;
 };
 
-const sf::Color TETRIMINO_J_COLOR = sf::Color::Red;
-const sf::Vector2<int> TETRIMINO_J[4] = {
-	sf::Vector2<int>(-1,  0),
-	sf::Vector2<int>( 0,  0),
-	sf::Vector2<int>( 1,  0),
-	sf::Vector2<int>(-1, -1)
+struct Tetrimino {
+	sf::Vector2<int> position;
+	Block blocks[4];
 };
 
-const sf::Color TETRIMINO_Z_COLOR = sf::Color::Red;
-const sf::Vector2<int> TETRIMINO_Z[4] = {
-	sf::Vector2<int>(-1,  0),
-	sf::Vector2<int>( 0,  0),
-	sf::Vector2<int>( 1,  0),
-	sf::Vector2<int>( 1,  1)
-};
+void move(Tetrimino& tetrimino, int x, int y) {
+	for (auto b : tetrimino.blocks) {
+		b.position.x += x;
+		b.position.y += y;
+	}
+}
 
-const sf::Color TETRIMINO_S_COLOR = sf::Color::Red;
-const sf::Vector2<int> TETRIMINO_S[4] = {
-	sf::Vector2<int>(-1,  0),
-	sf::Vector2<int>( 0,  0),
-	sf::Vector2<int>( 1,  0),
-	sf::Vector2<int>( 1,  1)
-};
+void rotate(Tetrimino&);
+void draw(Tetrimino&);
 
-const sf::Color TETRIMINO_T_COLOR = sf::Color::Red;
-const sf::Vector2<int> TETRIMINO_T[4] = {
-	sf::Vector2<int>(-1,  0),
-	sf::Vector2<int>( 0,  0),
-	sf::Vector2<int>( 1,  0),
-	sf::Vector2<int>( 1,  1)
-};
+Tetrimino make_tetrimino(sf::Vector2<int> position, int shape) {
+	Tetrimino tetrimino;
+	tetrimino.position = position;
 
-const sf::Color TETRIMINO_O_COLOR = sf::Color::Red;
-const sf::Vector2<int> TETRIMINO_O[4] = {
-	sf::Vector2<int>(-1,  0),
-	sf::Vector2<int>( 0,  0),
-	sf::Vector2<int>( 1,  0),
-	sf::Vector2<int>( 1,  1)
-};
+	switch (shape) {
+		case 0:
+			for (int i = 0; i < 4; ++i) {
+				tetrimino.blocks[i].color = TETRIMINO_L_COLOR;
+				tetrimino.blocks[i].position = TETRIMINO_L[i];
+			}
+			break;
 
-const sf::Color TETRIMINO_I_COLOR = sf::Color::Red;
-const sf::Vector2<int> TETRIMINO_I[4] = {
-	sf::Vector2<int>(-1,  0),
-	sf::Vector2<int>( 0,  0),
-	sf::Vector2<int>( 1,  0),
-	sf::Vector2<int>( 1,  1)
-};
+		case 1: 
+			for (int i = 0; i < 4; ++i) {
+				tetrimino.blocks[i].color = TETRIMINO_J_COLOR;
+				tetrimino.blocks[i].position = TETRIMINO_J[i];
+			}
+			break;
+
+		case 2: 
+			for (int i = 0; i < 4; ++i) {
+				tetrimino.blocks[i].color = TETRIMINO_Z_COLOR;
+				tetrimino.blocks[i].position = TETRIMINO_Z[i];
+			}
+			break;
+
+		case 3: 
+			for (int i = 0; i < 4; ++i) {
+				tetrimino.blocks[i].color = TETRIMINO_S_COLOR;
+				tetrimino.blocks[i].position = TETRIMINO_S[i];
+			}
+			break;
+
+		case 4: 
+			for (int i = 0; i < 4; ++i) {
+				tetrimino.blocks[i].color = TETRIMINO_T_COLOR;
+				tetrimino.blocks[i].position = TETRIMINO_T[i];
+			}
+			break;
+
+		case 5: 
+			for (int i = 0; i < 4; ++i) {
+				tetrimino.blocks[i].color = TETRIMINO_O_COLOR;
+				tetrimino.blocks[i].position = TETRIMINO_O[i];
+			}
+			break;
+
+		case 6: 
+			for (int i = 0; i < 4; ++i) {
+				tetrimino.blocks[i].color = TETRIMINO_I_COLOR;
+				tetrimino.blocks[i].position = TETRIMINO_I[i];
+			}
+			break;
+
+	}
+
+	// set block texture
+	// for (auto b : tetrimino.blocks) {
+	// }
+
+	return tetrimino;
+}
+Tetrimino make_random(sf::Vector2<int> position) { 
+	return make_tetrimino(position, rand() % 7);
+}
