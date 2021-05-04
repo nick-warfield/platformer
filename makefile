@@ -16,7 +16,8 @@ TEST_DIR = tests
 CFLAGS += -I$(INCLUDE_DIR) -isystem $(LIB_DIR)
 
 HEADERS = $(wildcard *, $(INCLUDE_DIR)/*.hpp)
-OBJECTS := main.o $(patsubst %.hpp,%.o, $(notdir $(HEADERS)))
+SOURCE = $(wildcard *, $(SOURCE_DIR)/*.cpp)
+OBJECTS := $(patsubst %.cpp,%.o, $(notdir $(SOURCE)))
 OBJECTS := $(addprefix $(OBJECT_DIR)/, $(OBJECTS))
 
 $(OBJECT_DIR)/%.o: $(SOURCE_DIR)/%.cpp $(HEADERS)
