@@ -21,6 +21,13 @@ Player make_player(
 	return player;
 }
 
+void change_state(Player& player, State new_state) {
+	if (player.state != new_state) {
+		player.state = new_state;
+		player.current_frame = 0;
+	}
+}
+
 void next_frame(Player& player) {
 	player.current_frame++;
 	player.current_frame %= player.sprite_atlas[player.state].frame_count;
