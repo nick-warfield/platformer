@@ -1,3 +1,5 @@
+TODO: Let's make Tetris instead!
+
 TODO: Properly credit oco, szadiart, and shapeforms
 
 * https://oco.itch.io/medieval-fantasy-character-pack
