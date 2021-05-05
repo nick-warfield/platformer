@@ -2,7 +2,6 @@
 #include <iterator>
 #include <memory>
 
-
 #include <SFML/System.hpp>
 #include <SFML/Graphics.hpp>
 
