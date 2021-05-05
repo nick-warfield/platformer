@@ -20,7 +20,18 @@ void move(Tetrimino& tetrimino, int x, int y) {
 	tetrimino.position.y += y;
 }
 
-void rotate(Tetrimino&);
+void rotate(Tetrimino& tetrimino) {
+	tetrimino.rotation += 4;
+	tetrimino.rotation = tetrimino.rotation % tetrimino.block_positions.size();
+
+	for (int i = 0; i < 4; i++) {
+		tetrimino.blocks[i].setPosition(
+				tetrimino.block_positions[i + tetrimino.rotation].x,
+				tetrimino.block_positions[i + tetrimino.rotation].y);
+	}
+}
+
+
 void draw_tetrimino(const Tetrimino& tetrimino, sf::RenderWindow& window) {
 	for (auto b : tetrimino.blocks) {
 		b.setPosition(

@@ -1,3 +1,5 @@
+#include <iostream>
+
 #include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>
 
@@ -29,6 +31,8 @@ int main()
 	tetri.push_back(make_tetrimino(sf::Vector2<int>(900, 600), 5));
 	tetri.push_back(make_tetrimino(sf::Vector2<int>(1200, 600), 6));
 
+	sf::Clock timer;
+
     // Start the game loop
     while (window.isOpen())
     {
@@ -40,6 +44,15 @@ int main()
             if (event.type == sf::Event::Closed)
                 window.close();
         }
+		
+		// rotate blocks every 3/4th second
+		if (timer.getElapsedTime().asSeconds() > 0.75f) {
+			for (auto &t : tetri) {
+				rotate(t);
+			}
+			timer.restart();
+		}
+
         // Clear screen
         window.clear();
         // Draw the sprite
