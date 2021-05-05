@@ -9,16 +9,18 @@ int main()
     sf::RenderWindow window(sf::VideoMode(1920, 1080), "Tetris");
 
     // Load a sprite to display
-    sf::Texture texture;
-    if (!texture.loadFromFile("./resources/block.png"))
-        return EXIT_FAILURE;
-    sf::Sprite sprite(texture);
+//    sf::Texture texture;
+//    if (!texture.loadFromFile("./resources/block.png"))
+//        return EXIT_FAILURE;
+//    sf::Sprite sprite(texture);
 
     // Load a music to play
-    sf::Music music;
-    if (!music.openFromFile("resources/Shapeforms/Dystopia – Ambience and Drone Preview/AUDIO/AMBIENCE_SIGNAL_LOOP.wav"))
-        return EXIT_FAILURE;
-    music.play();
+//    sf::Music music;
+//    if (!music.openFromFile("resources/Shapeforms/Dystopia – Ambience and Drone Preview/AUDIO/AMBIENCE_SIGNAL_LOOP.wav"))
+//        return EXIT_FAILURE;
+//    music.play();
+
+	Tetrimino t = make_random(sf::Vector2<int>(320, 320));
 
     // Start the game loop
     while (window.isOpen())
@@ -34,7 +36,7 @@ int main()
         // Clear screen
         window.clear();
         // Draw the sprite
-        window.draw(sprite);
+		draw_tetrimino(t, window);
         // Update the window
         window.display();
     }
