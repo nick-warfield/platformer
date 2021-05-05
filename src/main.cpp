@@ -20,7 +20,14 @@ int main()
 //        return EXIT_FAILURE;
 //    music.play();
 
-	Tetrimino t = make_tetrimino(sf::Vector2<int>(320, 320), 1);
+	std::vector<Tetrimino> tetri;
+	tetri.push_back(make_tetrimino(sf::Vector2<int>(400, 300), 0));
+	tetri.push_back(make_tetrimino(sf::Vector2<int>(800, 300), 1));
+	tetri.push_back(make_tetrimino(sf::Vector2<int>(1200, 300), 2));
+	tetri.push_back(make_tetrimino(sf::Vector2<int>(300, 600), 3));
+	tetri.push_back(make_tetrimino(sf::Vector2<int>(600, 600), 4));
+	tetri.push_back(make_tetrimino(sf::Vector2<int>(900, 600), 5));
+	tetri.push_back(make_tetrimino(sf::Vector2<int>(1200, 600), 6));
 
     // Start the game loop
     while (window.isOpen())
@@ -36,7 +43,7 @@ int main()
         // Clear screen
         window.clear();
         // Draw the sprite
-		draw_tetrimino(t, window);
+		for (auto t : tetri) { draw_tetrimino(t, window); }
         // Update the window
         window.display();
     }
