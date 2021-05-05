@@ -2,7 +2,7 @@
 #include <SFML/Graphics.hpp>
 
 const sf::Color TETRIMINO_L_COLOR = sf::Color::Red;
-const sf::Vector2<int> TETRIMINO_L[4] = {
+const std::initializer_list<sf::Vector2<int>> TETRIMINO_L = {
 	sf::Vector2<int>(-1,  0),
 	sf::Vector2<int>( 0,  0),
 	sf::Vector2<int>( 1,  0),

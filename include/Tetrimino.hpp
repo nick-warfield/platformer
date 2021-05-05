@@ -1,3 +1,5 @@
+#include <vector>
+#include <iterator>
 #include <memory>
 
 #include <SFML/System.hpp>
@@ -13,6 +15,8 @@ struct Block {
 
 struct Tetrimino {
 	sf::Vector2<int> position;
+	int rotation;
+	std::vector<sf::Vector2<int>> block_positions;
 	Block blocks[4];
 };
 
@@ -29,13 +33,14 @@ void draw(Tetrimino&);
 Tetrimino make_tetrimino(sf::Vector2<int> position, int shape) {
 	Tetrimino tetrimino;
 	tetrimino.position = position;
+	tetrimino.rotation = 0;
+	sf::Color color = sf::Color::White;
+	std::vector<sf::Vector2<int>> v;
 
 	switch (shape) {
 		case 0:
-			for (int i = 0; i < 4; ++i) {
-				tetrimino.blocks[i].color = TETRIMINO_L_COLOR;
-				tetrimino.blocks[i].position = TETRIMINO_L[i];
-			}
+			color = TETRIMINO_L_COLOR;
+			TETRIMINO_L;
 			break;
 
 		case 1: 
