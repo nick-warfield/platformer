@@ -75,9 +75,9 @@ Tetrimino make_tetrimino(sf::Vector2<int> position, int shape) {
 	}
 
 	// set block texture
-	sf::Texture t;
-	t.loadFromFile("resources/block.png");
 	for (int i = 0; i < 4; ++i) {
+		sf::Texture t;
+		t.loadFromFile("resources/block.png");
 		tetrimino.blocks[i].setTexture(t);
 		tetrimino.blocks[i].setColor(tetrimino.color);
 		tetrimino.blocks[i].setPosition(

@@ -20,7 +20,7 @@ int main()
 //        return EXIT_FAILURE;
 //    music.play();
 
-	Tetrimino t = make_random(sf::Vector2<int>(320, 320));
+	Tetrimino t = make_tetrimino(sf::Vector2<int>(320, 320), 1);
 
     // Start the game loop
     while (window.isOpen())
