@@ -1,13 +1,16 @@
 #include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>
 
+#include "Tetrimino.hpp"
+
 int main()
 {
     // Create the main window
-    sf::RenderWindow window(sf::VideoMode(800, 600), "SFML window");
+    sf::RenderWindow window(sf::VideoMode(1920, 1080), "Tetris");
+
     // Load a sprite to display
     sf::Texture texture;
-    if (!texture.loadFromFile("./resources/Knight/noBKG_KnightIdle_strip.png"))
+    if (!texture.loadFromFile("./resources/block.png"))
         return EXIT_FAILURE;
     sf::Sprite sprite(texture);
 
@@ -15,7 +18,6 @@ int main()
     sf::Music music;
     if (!music.openFromFile("resources/Shapeforms/Dystopia – Ambience and Drone Preview/AUDIO/AMBIENCE_SIGNAL_LOOP.wav"))
         return EXIT_FAILURE;
-    // Play the music
     music.play();
 
     // Start the game loop
