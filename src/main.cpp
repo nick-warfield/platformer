@@ -56,11 +56,14 @@ int main()
 			timer.restart();
 		}
 
+		run(game);
+
         // Clear screen
         window.clear();
         // Draw the sprite
 		for (auto t : tetri) { draw_tetrimino(t, window); }
 		for (auto b : game.placed_blocks) { window.draw(b); }
+		draw_tetrimino(game.player_tetrimino, window);
         // Update the window
         window.display();
     }

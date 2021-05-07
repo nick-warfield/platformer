@@ -12,6 +12,7 @@ struct Game {
 	int score = 0;
 	int level = 0;
 	float fall_speed = 1.0f;
+	sf::Clock timer;
 
 	Tetrimino player_tetrimino;
 	Tetrimino held_tetrimino;
@@ -23,7 +24,8 @@ struct Game {
 
 Game make_game(int board_width = 10, int board_height = 20) {
 	Game game;
-	game.place_position = sf::Vector2(board_width / 2, board_height / 2);
+	game.place_position = sf::Vector2(board_width / 2, 9) * BLOCK_SCALE;
+	game.player_tetrimino = make_random(game.place_position);
 	sf::Texture t;
 	t.loadFromFile("resources/block.png");
 	sf::Color wall_color = sf::Color::White;
@@ -83,10 +85,17 @@ void move_player_tetrimino(Game& level, int x, int y) {
 // needs to do a check for when there is nothing held
 Tetrimino hold_tetrimino(Game& level);
 
-// returns true if a placed block is at the top
+// returns true if a placed block over 20 blocks in height
 bool is_game_over(Game& level);
 
 // pseudo random tetrimino generation
 // shuffles one of each block, and puts them in the queue
 void generate_tetrimino_batch(Game& level);
 void place_tetrimino(Game& level);
+
+void run(Game& level) {
+	if (level.timer.getElapsedTime().asSeconds() > level.fall_speed) {
+		move_player_tetrimino(level, 0, 1);
+		level.timer.restart();
+	}
+}
