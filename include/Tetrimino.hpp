@@ -1,5 +1,6 @@
 #pragma once
 
+#include <iostream>
 #include <vector>
 #include <iterator>
 #include <memory>
@@ -8,12 +9,13 @@
 #include <SFML/Graphics.hpp>
 
 #include "TetriminoData.hpp"
+#include "Block.hpp"
 
 struct Tetrimino {
 	sf::Vector2<int> position;
 	int rotation;
 	std::vector<sf::Vector2<int>> block_positions;
-	sf::Sprite blocks[4];
+	Block blocks[4];
 	sf::Color color;
 };
 
@@ -22,19 +24,21 @@ void rotate(Tetrimino& tetrimino) {
 	tetrimino.rotation = tetrimino.rotation % tetrimino.block_positions.size();
 
 	for (int i = 0; i < 4; i++) {
-		tetrimino.blocks[i].setPosition(
-				tetrimino.block_positions[i + tetrimino.rotation].x,
-				tetrimino.block_positions[i + tetrimino.rotation].y);
+		tetrimino.blocks[i].position
+			= tetrimino.block_positions[i + tetrimino.rotation];
 	}
 }
 
 
-void draw_tetrimino(const Tetrimino& tetrimino, sf::RenderWindow& window) {
+void draw_tetrimino(
+		sf::RenderWindow& window,
+		sf::RenderStates& states,
+		const Tetrimino& tetrimino) {
 	for (auto b : tetrimino.blocks) {
-		b.setPosition(
-				b.getPosition().x + tetrimino.position.x,
-				b.getPosition().y + tetrimino.position.y);
-		window.draw(b);
+		sf::Transform trans;
+		trans.translate((sf::Vector2f)(tetrimino.position * PIXELS_PER_BLOCK));
+		states.transform = trans;
+		draw_block(window, states, b);
 	}
 }
 
@@ -82,15 +86,10 @@ Tetrimino make_tetrimino(sf::Vector2<int> position, int shape) {
 
 	}
 
-	// set block texture
 	for (int i = 0; i < 4; ++i) {
-		sf::Texture t;
-		t.loadFromFile("resources/block.png");
-		tetrimino.blocks[i].setTexture(t);
-		tetrimino.blocks[i].setColor(tetrimino.color);
-		tetrimino.blocks[i].setPosition(
-				tetrimino.block_positions[i].x,
-				tetrimino.block_positions[i].y);
+		tetrimino.blocks[i] = make_block(
+				tetrimino.color,
+				tetrimino.block_positions[i]);
 	}
 
 	return tetrimino;
