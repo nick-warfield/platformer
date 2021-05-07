@@ -16,7 +16,6 @@ struct Tetrimino {
 	int rotation;
 	std::vector<sf::Vector2<int>> block_positions;
 	Block blocks[4];
-	sf::Color color;
 };
 
 void rotate(Tetrimino& tetrimino) {
@@ -46,50 +45,48 @@ Tetrimino make_tetrimino(sf::Vector2<int> position, int shape) {
 	Tetrimino tetrimino;
 	tetrimino.position = position;
 	tetrimino.rotation = 0;
-	tetrimino.color = sf::Color::White;
+	sf::Color color = sf::Color::White;
 
 	switch (shape) {
 		case 0:
-			tetrimino.color = TETRIMINO_L_COLOR;
+			color = TETRIMINO_L_COLOR;
 			tetrimino.block_positions = TETRIMINO_L;
 			break;
 
 		case 1: 
-			tetrimino.color = TETRIMINO_J_COLOR;
+			color = TETRIMINO_J_COLOR;
 			tetrimino.block_positions = TETRIMINO_J;
 			break;
 
 		case 2: 
-			tetrimino.color = TETRIMINO_S_COLOR;
+			color = TETRIMINO_S_COLOR;
 			tetrimino.block_positions = TETRIMINO_S;
 			break;
 
 		case 3: 
-			tetrimino.color = TETRIMINO_Z_COLOR;
+			color = TETRIMINO_Z_COLOR;
 			tetrimino.block_positions = TETRIMINO_Z;
 			break;
 
 		case 4: 
-			tetrimino.color = TETRIMINO_T_COLOR;
+			color = TETRIMINO_T_COLOR;
 			tetrimino.block_positions = TETRIMINO_T;
 			break;
 
 		case 5: 
-			tetrimino.color = TETRIMINO_O_COLOR;
+			color = TETRIMINO_O_COLOR;
 			tetrimino.block_positions = TETRIMINO_O;
 			break;
 
 		case 6: 
-			tetrimino.color = TETRIMINO_I_COLOR;
+			color = TETRIMINO_I_COLOR;
 			tetrimino.block_positions = TETRIMINO_I;
 			break;
 
 	}
 
 	for (int i = 0; i < 4; ++i) {
-		tetrimino.blocks[i] = make_block(
-				tetrimino.color,
-				tetrimino.block_positions[i]);
+		tetrimino.blocks[i] = make_block(color, tetrimino.block_positions[i]);
 	}
 
 	return tetrimino;
