@@ -1,5 +1,6 @@
 #pragma once
 
+#include <iostream>
 #include <vector>
 #include <queue>
 
@@ -59,6 +60,7 @@ Game make_game(int board_width = 10, int board_height = 20) {
 
 // collision check, real simple because blocks are
 // grid and rotation locked, and the same size
+// not working, probably because sf::Sprite.position uses floats
 bool check_collision(Game& level) {
 	bool is_collision = false;;
 	for (auto b : level.player_tetrimino.blocks) {
@@ -68,6 +70,7 @@ bool check_collision(Game& level) {
 			}
 		}
 	}
+	//std::cout << is_collision << std::endl;
 	return is_collision;
 }
 

@@ -5,6 +5,7 @@
 
 #include "Game.hpp"
 #include "Tetrimino.hpp"
+#include "Block.hpp"
 
 int main()
 {
@@ -36,6 +37,10 @@ int main()
 
 	Game game = make_game();
 
+	sf::RenderStates states = sf::RenderStates::Default;
+	Block b1 = make_block(sf::Color::Cyan);
+	Block b2 = make_block(sf::Color::Red, sf::Vector2i(3, 3));
+
     // Start the game loop
     while (window.isOpen())
     {
@@ -60,10 +65,14 @@ int main()
 
         // Clear screen
         window.clear();
+
         // Draw the sprite
-		for (auto t : tetri) { draw_tetrimino(t, window); }
-		for (auto b : game.placed_blocks) { window.draw(b); }
-		draw_tetrimino(game.player_tetrimino, window);
+		//for (auto t : tetri) { draw_tetrimino(t, window); }
+		//for (auto b : game.placed_blocks) { window.draw(b); }
+		//draw_tetrimino(game.player_tetrimino, window);
+		draw_block(window, states, b1);
+		draw_block(window, states, b2);
+
         // Update the window
         window.display();
     }
