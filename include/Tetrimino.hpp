@@ -1,3 +1,5 @@
+#pragma once
+
 #include <vector>
 #include <iterator>
 #include <memory>
@@ -14,11 +16,6 @@ struct Tetrimino {
 	sf::Sprite blocks[4];
 	sf::Color color;
 };
-
-void move(Tetrimino& tetrimino, int x, int y) {
-	tetrimino.position.x += x;
-	tetrimino.position.y += y;
-}
 
 void rotate(Tetrimino& tetrimino) {
 	tetrimino.rotation += 4;

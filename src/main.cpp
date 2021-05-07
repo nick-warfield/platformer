@@ -3,6 +3,7 @@
 #include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>
 
+#include "Game.hpp"
 #include "Tetrimino.hpp"
 
 int main()
@@ -33,6 +34,8 @@ int main()
 
 	sf::Clock timer;
 
+	Game game = make_game();
+
     // Start the game loop
     while (window.isOpen())
     {
@@ -57,6 +60,7 @@ int main()
         window.clear();
         // Draw the sprite
 		for (auto t : tetri) { draw_tetrimino(t, window); }
+		for (auto b : game.placed_blocks) { window.draw(b); }
         // Update the window
         window.display();
     }
