@@ -92,12 +92,7 @@ int main()
         // Clear screen
         window.clear();
 
-        // Draw the sprite
-		for (auto b : game.placed_blocks) {
-			states.transform = sf::Transform::Identity;
-			draw_block(window, states, b);
-		}
-		draw_tetrimino(window, states, game.player_tetrimino);
+		draw_game(window, states, game);
 
         // Update the window
         window.display();
