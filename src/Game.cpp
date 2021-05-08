@@ -1,5 +1,9 @@
-#include "Game.hpp"
+#include <vector>
+#include <random>
+#include <algorithm>
 
+#include "Game.hpp"
+#include "Tetrimino.hpp"
 
 Game make_game() {
 	int board_width = 10;
@@ -63,9 +67,25 @@ Tetrimino hold_tetrimino(Game& level);
 // returns true if a placed block over 20 blocks in height
 bool is_game_over(Game& level);
 
-// pseudo random tetrimino generation
-// shuffles one of each block, and puts them in the queue
-void generate_tetrimino_batch(Game& level);
+void fill_queue(Game& level) {
+	std::vector<Tetrimino> bag;
+	bag.push_back(make_tetrimino(sf::Vector2i(-10, -10), 0));
+	bag.push_back(make_tetrimino(sf::Vector2i(-10, -10), 1));
+	bag.push_back(make_tetrimino(sf::Vector2i(-10, -10), 2));
+	bag.push_back(make_tetrimino(sf::Vector2i(-10, -10), 3));
+	bag.push_back(make_tetrimino(sf::Vector2i(-10, -10), 4));
+	bag.push_back(make_tetrimino(sf::Vector2i(-10, -10), 5));
+	bag.push_back(make_tetrimino(sf::Vector2i(-10, -10), 6));
+
+	auto rng = std::default_random_engine();
+	std::shuffle(bag.begin(), bag.end(), rng);
+
+	for (auto t : bag) {
+		level.next_tetriminos.push(t);
+	}
+}
+
+
 void clear_row(Game& level);
 void place_tetrimino(Game& level);
 
