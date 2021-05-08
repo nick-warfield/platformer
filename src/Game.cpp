@@ -60,12 +60,15 @@ void move_player_tetrimino(Game& level, int x, int y) {
 	}
 }
 
-// swaps the player and held tetrimno
-// needs to do a check for when there is nothing held
-Tetrimino hold_tetrimino(Game& level);
+void hold_tetrimino(Game& level) {
+	if (!level.held_tetrimino.has_value()) {
+		level.held_tetrimino = level.next_tetriminos.front();
+		level.next_tetriminos.pop();
+	}
+	std::swap(level.player_tetrimino, *level.held_tetrimino);
+}
 
-// returns true if a placed block over 20 blocks in height
-bool is_game_over(Game& level) {
+bool is_game_over(const Game& level) {
 	for (auto b : level.placed_blocks) {
 		if (b.position.y > 20) return true;
 	}
