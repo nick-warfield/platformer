@@ -41,7 +41,7 @@ void hold_tetrimino(Game& level);
 bool is_game_over(const Game& level);
 
 void fill_bag(Game& level);
-void clear_row(Game& level, int row);
+void clear_rows(Game& level);
 void place_tetrimino(Game& level);
 
 void draw_game(sf::RenderWindow& window, sf::RenderStates& states, Game& level);

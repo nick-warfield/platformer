@@ -102,7 +102,22 @@ void fill_bag(Game& level) {
 }
 
 // scoring and level up go in here
-void clear_row(Game& level, int row) {
+// need to account for clearing multiple rows at a time
+void clear_rows(Game& level) {
+	int lines_cleared = 0;
+	for (auto &[_, blocks] : level.placed_blocks) {
+		if (blocks.size() >= 10) {
+			blocks.clear();
+			lines_cleared++;
+		}
+	}
+	for (int i = 0; i < level.placed_blocks.size(); ++i) {
+		if (level.placed_blocks[i].empty()) {
+			for (int j = i + 1; j < level.placed_blocks.size(); ++j) {
+				std::swap(level.placed_blocks[j - 1], level.placed_blocks[j]);
+			}
+		}
+	}
 }
 
 void place_tetrimino(Game& level) {
@@ -113,11 +128,7 @@ void place_tetrimino(Game& level) {
 	}
 	level.player_tetrimino = level.next_tetriminos.front();
 
-	for (auto &[row, blocks] : level.placed_blocks) {
-		if (blocks.size() >= 10) {
-			clear_row(level, row);
-		}
-	}
+	clear_rows(level);
 
 	if (is_game_over(level)) {
 		std::cout << "Game Over!\n";
