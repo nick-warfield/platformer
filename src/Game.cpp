@@ -60,6 +60,10 @@ void move_player_tetrimino(Game& level, int x, int y) {
 	}
 }
 
+// there's a bug where you can rotate into walls,
+// this function should fix that
+void rotate_player_tetrimino(Game& level);
+
 void hold_tetrimino(Game& level) {
 	if (!level.held_tetrimino.has_value()) {
 		level.held_tetrimino = level.next_tetriminos.front();

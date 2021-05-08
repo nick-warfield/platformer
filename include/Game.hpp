@@ -31,6 +31,7 @@ Game make_game();
 bool check_collision(Game& level);
 
 void move_player_tetrimino(Game& level, int x, int y);
+void rotate_player_tetrimino(Game& level);
 
 void hold_tetrimino(Game& level);
 
