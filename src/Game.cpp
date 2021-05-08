@@ -102,7 +102,6 @@ void fill_bag(Game& level) {
 }
 
 // scoring and level up go in here
-// need to account for clearing multiple rows at a time
 void clear_rows(Game& level) {
 	int lines_cleared = 0;
 	for (auto &[_, blocks] : level.placed_blocks) {
@@ -117,6 +116,18 @@ void clear_rows(Game& level) {
 				std::swap(level.placed_blocks[j - 1], level.placed_blocks[j]);
 			}
 		}
+	}
+
+	// scoring and leveling up
+	switch (lines_cleared) {
+		case 1: level.score += level.level *  800; break;
+		case 2: level.score += level.level * 1200; break;
+		case 3: level.score += level.level * 1800; break;
+		case 4: level.score += level.level * 2000; break;
+	}
+	level.lines_cleared += lines_cleared;
+	while (level.lines_cleared >= level.level * 5) {
+		level.level++;
 	}
 }
 
