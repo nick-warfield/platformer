@@ -97,9 +97,28 @@ void fill_queue(Game& level) {
 	}
 }
 
-
+// scoring and level up go in here
 void clear_row(Game& level);
-void place_tetrimino(Game& level);
+
+void place_tetrimino(Game& level) {
+	for (auto b : level.player_tetrimino.blocks) {
+		level.placed_blocks.push_back(b);
+	}
+	level.player_tetrimino = level.next_tetriminos.front();
+
+	// if row.length() == 10
+	clear_row(level);
+
+	if (is_game_over(level)) {
+		std::cout << "Game Over!\n";
+		return;
+	}
+
+	level.next_tetriminos.pop();
+	if (level.next_tetriminos.size() < 7) {
+		generate_tetrimino_batch(level);
+	}
+}
 
 void draw_game(sf::RenderWindow& window, sf::RenderStates& states, Game& level) {
 	for (auto b : level.walls) {
@@ -113,6 +132,7 @@ void draw_game(sf::RenderWindow& window, sf::RenderStates& states, Game& level) 
 	draw_tetrimino(window, states, level.player_tetrimino);
 }
 
+// this'll need to get updated to allow player input and all that
 void run(Game& level) {
 	if (level.timer.getElapsedTime().asSeconds() > level.fall_speed) {
 		move_player_tetrimino(level, 0, 1);
