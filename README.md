@@ -8,6 +8,7 @@ TODO: Let's make Tetris instead!
 * Implement sound effects
 * Implement scoring
 * Implement Level upping
+* Implement UI
 
 TODO: Properly credit oco, szadiart, and shapeforms
 
