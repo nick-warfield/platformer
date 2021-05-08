@@ -1,6 +1,7 @@
 #pragma once
 
 #include <iostream>
+#include <map>
 #include <vector>
 #include <queue>
 #include <optional>
@@ -14,6 +15,7 @@
 struct Game {
 	int score = 0;
 	int level = 0;
+	int lines_cleared = 0;
 	float fall_speed = 1.0f;
 	sf::Clock timer;
 
@@ -22,7 +24,8 @@ struct Game {
 	std::queue<Tetrimino> next_tetriminos;
 
 	std::vector<Block> walls;
-	std::vector<Block> placed_blocks;
+	// maps row number to the blocks placed in that row
+	std::map<int, std::vector<Block>> placed_blocks;
 	sf::Vector2<int> place_position;
 };
 
@@ -37,8 +40,8 @@ void hold_tetrimino(Game& level);
 
 bool is_game_over(const Game& level);
 
-void generate_tetrimino_batch(Game& level);
-void clear_row(Game& level);
+void fill_bag(Game& level);
+void clear_row(Game& level, int row);
 void place_tetrimino(Game& level);
 
 void draw_game(sf::RenderWindow& window, sf::RenderStates& states, Game& level);

@@ -36,14 +36,18 @@ Game make_game() {
 bool check_collision(Game& level) {
 	bool is_collision = false;;
 	for (auto b : level.player_tetrimino.blocks) {
-		for (auto p : level.walls) {
-			if (p.position == level.player_tetrimino.position + b.position) {
+		for (auto w : level.walls) {
+			if (w.position == level.player_tetrimino.position + b.position) {
 				is_collision = true;
 			}
 		}
-		for (auto p : level.placed_blocks) {
-			if (p.position == level.player_tetrimino.position + b.position) {
-				is_collision = true;
+		for (auto &[_, pb] : level.placed_blocks) {
+			for (auto p : pb) {
+				if (p.position == 
+						level.player_tetrimino.position
+						+ b.position) {
+					is_collision = true;
+				}
 			}
 		}
 	}
@@ -73,13 +77,13 @@ void hold_tetrimino(Game& level) {
 }
 
 bool is_game_over(const Game& level) {
-	for (auto b : level.placed_blocks) {
-		if (b.position.y > 20) return true;
+	for (auto &[row, blocks] : level.placed_blocks) {
+		if (row > 20 && blocks.size() > 0) { return true; }
 	}
 	return false;
 }
 
-void fill_queue(Game& level) {
+void fill_bag(Game& level) {
 	std::vector<Tetrimino> bag;
 	bag.push_back(make_tetrimino(sf::Vector2i(-10, -10), 0));
 	bag.push_back(make_tetrimino(sf::Vector2i(-10, -10), 1));
@@ -98,16 +102,22 @@ void fill_queue(Game& level) {
 }
 
 // scoring and level up go in here
-void clear_row(Game& level);
+void clear_row(Game& level, int row) {
+}
 
 void place_tetrimino(Game& level) {
+	int h = level.player_tetrimino.position.y;
 	for (auto b : level.player_tetrimino.blocks) {
-		level.placed_blocks.push_back(b);
+		b.position.y += h;
+		level.placed_blocks[b.position.y].push_back(b);
 	}
 	level.player_tetrimino = level.next_tetriminos.front();
 
-	// if row.length() == 10
-	clear_row(level);
+	for (auto &[row, blocks] : level.placed_blocks) {
+		if (blocks.size() >= 10) {
+			clear_row(level, row);
+		}
+	}
 
 	if (is_game_over(level)) {
 		std::cout << "Game Over!\n";
@@ -116,7 +126,7 @@ void place_tetrimino(Game& level) {
 
 	level.next_tetriminos.pop();
 	if (level.next_tetriminos.size() < 7) {
-		generate_tetrimino_batch(level);
+		fill_bag(level);
 	}
 }
 
@@ -125,9 +135,11 @@ void draw_game(sf::RenderWindow& window, sf::RenderStates& states, Game& level) 
 		states.transform = sf::Transform::Identity;
 		draw_block(window, states, b);
 	}
-	for (auto b : level.placed_blocks) {
-		states.transform = sf::Transform::Identity;
-		draw_block(window, states, b);
+	for (auto &[_, blocks] : level.placed_blocks) {
+		for (auto b : blocks) {
+			states.transform = sf::Transform::Identity;
+			draw_block(window, states, b);
+		}
 	}
 	draw_tetrimino(window, states, level.player_tetrimino);
 }

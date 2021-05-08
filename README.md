@@ -1,6 +1,5 @@
 TODO: Let's make Tetris instead!
 * Fix rotating into walls bug
-* Implement Placing blocks
 * Implement clearing lines
 * Find nicer free tetris assets
 * Implement Main Menu
