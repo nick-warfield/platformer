@@ -65,7 +65,12 @@ void move_player_tetrimino(Game& level, int x, int y) {
 Tetrimino hold_tetrimino(Game& level);
 
 // returns true if a placed block over 20 blocks in height
-bool is_game_over(Game& level);
+bool is_game_over(Game& level) {
+	for (auto b : level.placed_blocks) {
+		if (b.position.y > 20) return true;
+	}
+	return false;
+}
 
 void fill_queue(Game& level) {
 	std::vector<Tetrimino> bag;
