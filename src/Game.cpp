@@ -136,9 +136,9 @@ void clear_rows(Game& level) {
 }
 
 void place_tetrimino(Game& level) {
-	int h = level.player_tetrimino.position.y;
+	auto pos = level.player_tetrimino.position;
 	for (auto b : level.player_tetrimino.blocks) {
-		b.position.y += h;
+		b.position += pos;
 		level.placed_blocks[b.position.y].push_back(b);
 	}
 
