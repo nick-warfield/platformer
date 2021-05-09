@@ -82,6 +82,8 @@ void hold_tetrimino(Game& level) {
 		level.next_tetriminos.pop_front();
 	}
 	std::swap(level.player_tetrimino, *level.held_tetrimino);
+	level.player_tetrimino.position = level.held_tetrimino->position;
+	level.held_tetrimino->position = sf::Vector2i(15, 21);
 }
 
 bool is_game_over(const Game& level) {
@@ -205,6 +207,11 @@ void draw_game(sf::RenderWindow& window, sf::RenderStates& states, Game& level) 
 		draw_tetrimino(window, states, *t);
 		t++;
 	}
+
+	level.text.setString("Hold");
+	level.text.setPosition(sf::Vector2f(420, 576));
+	window.draw(level.text);
+	draw_tetrimino(window, states, *level.held_tetrimino);
 }
 
 // this'll need to get updated to allow player input and all that
@@ -227,5 +234,8 @@ void update_game(Game& level, std::vector<Input> inputs) {
 	if (inputs[Command::HARD_DROP].is_just_pressed) {
 		while (!move_player_tetrimino(level, 0, 1)) { }
 		place_tetrimino(level);
+	}
+	if (inputs[Command::HOLD].is_just_pressed) {
+		hold_tetrimino(level);
 	}
 }
