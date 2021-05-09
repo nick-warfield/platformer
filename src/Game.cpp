@@ -117,13 +117,20 @@ void clear_rows(Game& level) {
 	if (lines_cleared == 0) return;
 
 	// something buggy here
-	for (int i = 0; i < level.placed_blocks.size(); ++i) {
-		if (level.placed_blocks[i].empty()) {
-			for (int j = i + 1; j < level.placed_blocks.size(); ++j) {
-				std::swap(level.placed_blocks[j - 1], level.placed_blocks[j]);
+	for (auto &[row, blocks] : level.placed_blocks) {
+		if (!blocks.empty()) continue;
+
+		for (int next_row = row - 1; next_row > 0; next_row--) {
+			for (auto &b : level.placed_blocks[next_row]) {
+				b.position.y++;
 			}
+
+			std::swap(level.placed_blocks[next_row + 1],
+					level.placed_blocks[next_row]);
 		}
+
 	}
+
 
 	// scoring and leveling up
 	switch (lines_cleared) {
