@@ -13,6 +13,7 @@ Game make_game() {
 	Game game;
 	game.place_position = sf::Vector2(board_width / 2, 9);
 	game.player_tetrimino = make_random(game.place_position);
+	fill_bag(game);
 
 	// set walls
 	for (int i = 1; i < board_height + 10; ++i) {
@@ -140,7 +141,6 @@ void place_tetrimino(Game& level) {
 		b.position.y += h;
 		level.placed_blocks[b.position.y].push_back(b);
 	}
-	level.player_tetrimino = level.next_tetriminos.front();
 
 	clear_rows(level);
 
@@ -149,6 +149,8 @@ void place_tetrimino(Game& level) {
 		return;
 	}
 
+	level.player_tetrimino = level.next_tetriminos.front();
+	level.player_tetrimino.position = level.place_position;
 	level.next_tetriminos.pop();
 	if (level.next_tetriminos.size() < 7) {
 		fill_bag(level);
