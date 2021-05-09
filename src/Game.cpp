@@ -20,11 +20,11 @@ Game make_game() {
 		game.walls.push_back(
 				make_block(wall_color, sf::Vector2i(0, i)));
 		game.walls.push_back(
-				make_block(wall_color, sf::Vector2i(board_width, i)));
+				make_block(wall_color, sf::Vector2i(board_width + 1, i)));
 	}
 
 	// set floor
-	for (int i = 0; i <= board_width; ++i) {
+	for (int i = 0; i <= board_width + 1; ++i) {
 		game.walls.push_back(
 				make_block(wall_color, sf::Vector2i(i, board_height + 10)));
 	}
@@ -81,7 +81,8 @@ void hold_tetrimino(Game& level) {
 
 bool is_game_over(const Game& level) {
 	for (auto &[row, blocks] : level.placed_blocks) {
-		if (row > 20 && blocks.size() > 0) { return true; }
+		// inverted y access + an offset for the max height
+		if (row < 10 && blocks.size() > 0) { return true; }
 	}
 	return false;
 }
@@ -113,6 +114,9 @@ void clear_rows(Game& level) {
 			lines_cleared++;
 		}
 	}
+	if (lines_cleared == 0) return;
+
+	// something buggy here
 	for (int i = 0; i < level.placed_blocks.size(); ++i) {
 		if (level.placed_blocks[i].empty()) {
 			for (int j = i + 1; j < level.placed_blocks.size(); ++j) {
@@ -141,8 +145,16 @@ void place_tetrimino(Game& level) {
 		b.position += pos;
 		level.placed_blocks[b.position.y].push_back(b);
 	}
+	for (auto &[r, b] : level.placed_blocks) {
+		std::cout << r << " -> " << b.size() << std::endl;
+	}
+	std::cout << std::endl;
 
 	clear_rows(level);
+	for (auto &[r, b] : level.placed_blocks) {
+		std::cout << r << " -> " << b.size() << std::endl;
+	}
+	std::cout << std::endl;
 
 	if (is_game_over(level)) {
 		std::cout << "Game Over!\n";
