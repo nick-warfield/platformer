@@ -249,6 +249,9 @@ void update_game(Game& level, std::vector<Input> inputs) {
 	if (inputs[Command::ROTATE_CW].is_just_pressed) {
 		rotate_player_tetrimino(level, true);
 	}
+	if (inputs[Command::ROTATE_CCW].is_just_pressed) {
+		rotate_player_tetrimino(level, false);
+	}
 	if (inputs[Command::HARD_DROP].is_just_pressed) {
 		while (!move_player_tetrimino(level, 0, 1)) { }
 		place_tetrimino(level);
