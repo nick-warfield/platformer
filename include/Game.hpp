@@ -14,8 +14,11 @@
 #include "Input.hpp"
 
 struct Game {
+	sf::Font font;
+	sf::Text text;
+
 	int score = 0;
-	int level = 0;
+	int level = 1;
 	int lines_cleared = 0;
 	float fall_speed = 1000.0f;
 	sf::Clock timer;

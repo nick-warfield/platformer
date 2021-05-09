@@ -15,6 +15,11 @@ Game make_game() {
 	game.player_tetrimino = make_random(game.place_position);
 	fill_bag(game);
 
+	game.font.loadFromFile("resources/Pixeboy-z8XGD.ttf");
+	game.text.setFont(game.font);
+	game.text.setCharacterSize(64);
+	game.text.setFillColor(sf::Color::White);
+
 	// set walls
 	for (int i = 1; i < board_height + 10; ++i) {
 		game.walls.push_back(
@@ -152,16 +157,7 @@ void place_tetrimino(Game& level) {
 		b.position += pos;
 		level.placed_blocks[b.position.y].push_back(b);
 	}
-	for (auto &[r, b] : level.placed_blocks) {
-		std::cout << r << " -> " << b.size() << std::endl;
-	}
-	std::cout << std::endl;
-
 	clear_rows(level);
-	for (auto &[r, b] : level.placed_blocks) {
-		std::cout << r << " -> " << b.size() << std::endl;
-	}
-	std::cout << std::endl;
 
 	if (is_game_over(level)) {
 		std::cout << "Game Over!\n";
@@ -181,13 +177,23 @@ void draw_game(sf::RenderWindow& window, sf::RenderStates& states, Game& level) 
 		states.transform = sf::Transform::Identity;
 		draw_block(window, states, b);
 	}
+
 	for (auto &[_, blocks] : level.placed_blocks) {
 		for (auto b : blocks) {
 			states.transform = sf::Transform::Identity;
 			draw_block(window, states, b);
 		}
 	}
+
 	draw_tetrimino(window, states, level.player_tetrimino);
+
+	level.text.setString("Score: " + std::to_string(level.score));
+	level.text.setPosition(sf::Vector2f(420, 64));
+	window.draw(level.text);
+
+	level.text.setString("Level: " + std::to_string(level.level));
+	level.text.setPosition(sf::Vector2f(420, 128));
+	window.draw(level.text);
 }
 
 // this'll need to get updated to allow player input and all that
