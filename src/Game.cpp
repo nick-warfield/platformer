@@ -39,12 +39,11 @@ Game make_game() {
 
 // collision check, real simple because blocks are
 // grid and rotation locked, and the same size
-bool check_collision(Game& level) {
-	bool is_collision = false;;
+std::optional<sf::Vector2i> check_collision(Game& level) {
 	for (auto b : level.player_tetrimino.blocks) {
 		for (auto w : level.walls) {
 			if (w.position == level.player_tetrimino.position + b.position) {
-				is_collision = true;
+				return std::optional<sf::Vector2i>(w.position);
 			}
 		}
 		for (auto &[_, pb] : level.placed_blocks) {
@@ -52,19 +51,19 @@ bool check_collision(Game& level) {
 				if (p.position == 
 						level.player_tetrimino.position
 						+ b.position) {
-					is_collision = true;
+					return std::optional<sf::Vector2i>(p.position);
 				}
 			}
 		}
 	}
-	return is_collision;
+	return std::optional<sf::Vector2i>();
 }
 
 bool move_player_tetrimino(Game& level, int x, int y) {
 	level.player_tetrimino.position.x += x;
 	level.player_tetrimino.position.y += y;
 
-	bool collision = check_collision(level);
+	bool collision = check_collision(level).has_value();
 	if (collision) {
 		level.player_tetrimino.position.x -= x;
 		level.player_tetrimino.position.y -= y;
@@ -74,7 +73,19 @@ bool move_player_tetrimino(Game& level, int x, int y) {
 
 // there's a bug where you can rotate into walls,
 // this function should fix that
-void rotate_player_tetrimino(Game& level);
+void rotate_player_tetrimino(Game& level, bool is_cw) {
+	if (is_cw) { level.player_tetrimino.rotation += 4; }
+	else { level.player_tetrimino.rotation -= 4; }
+
+	level.player_tetrimino.rotation = 
+		level.player_tetrimino.rotation
+		% level.player_tetrimino.block_positions.size();
+
+	for (int i = 0; i < 4; i++) {
+		level.player_tetrimino.blocks[i].position
+			= level.player_tetrimino.block_positions[i + level.player_tetrimino.rotation];
+	}
+}
 
 void hold_tetrimino(Game& level) {
 	if (!level.held_tetrimino.has_value()) {
@@ -211,7 +222,8 @@ void draw_game(sf::RenderWindow& window, sf::RenderStates& states, Game& level) 
 	level.text.setString("Hold");
 	level.text.setPosition(sf::Vector2f(420, 576));
 	window.draw(level.text);
-	draw_tetrimino(window, states, *level.held_tetrimino);
+	if (level.held_tetrimino.has_value())
+		draw_tetrimino(window, states, *level.held_tetrimino);
 }
 
 // this'll need to get updated to allow player input and all that

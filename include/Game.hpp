@@ -35,10 +35,10 @@ struct Game {
 
 Game make_game();
 
-bool check_collision(Game& level);
+std::optional<sf::Vector2i> check_collision(Game& level);
 
 bool move_player_tetrimino(Game& level, int x, int y);
-void rotate_player_tetrimino(Game& level);
+void rotate_player_tetrimino(Game& level, bool is_cw);
 
 void hold_tetrimino(Game& level);
 
