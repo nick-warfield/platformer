@@ -167,7 +167,7 @@ void draw_game(sf::RenderWindow& window, sf::RenderStates& states, Game& level) 
 }
 
 // this'll need to get updated to allow player input and all that
-void run(Game& level) {
+void update_game(Game& level, std::vector<Input> intputs) {
 	if (level.timer.getElapsedTime().asSeconds() > level.fall_speed) {
 		move_player_tetrimino(level, 0, 1);
 		level.timer.restart();

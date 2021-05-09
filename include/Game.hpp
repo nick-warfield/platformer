@@ -11,6 +11,7 @@
 
 #include "Block.hpp"
 #include "Tetrimino.hpp"
+#include "Input.hpp"
 
 struct Game {
 	int score = 0;
@@ -46,4 +47,4 @@ void place_tetrimino(Game& level);
 
 void draw_game(sf::RenderWindow& window, sf::RenderStates& states, Game& level);
 
-void run(Game& level);
+void update_game(Game& level, std::vector<Input> inputs);
