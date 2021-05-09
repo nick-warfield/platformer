@@ -15,10 +15,12 @@ int main()
     sf::RenderWindow window(sf::VideoMode(1920, 1080), "Tetris");
 
     // Load a music to play
-//    sf::Music music;
-//    if (!music.openFromFile("resources/Shapeforms/Dystopia – Ambience and Drone Preview/AUDIO/AMBIENCE_SIGNAL_LOOP.wav"))
-//        return EXIT_FAILURE;
-//    music.play();
+    sf::Music music;
+    if (!music.openFromFile("resources/tetris_theme.ogg")) {
+        return EXIT_FAILURE;
+	}
+	music.setVolume(50);
+    music.play();
 
 	sf::Clock timer;
 	std::vector<Input> command;
