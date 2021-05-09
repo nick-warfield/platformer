@@ -85,6 +85,12 @@ void rotate_player_tetrimino(Game& level, bool is_cw) {
 		level.player_tetrimino.blocks[i].position
 			= level.player_tetrimino.block_positions[i + level.player_tetrimino.rotation];
 	}
+
+	auto col = check_collision(level);
+	if (col) {
+		auto dir = level.player_tetrimino.position - *col;
+		move_player_tetrimino(level, dir.x, dir.y);
+	}
 }
 
 void hold_tetrimino(Game& level) {
@@ -241,7 +247,7 @@ void update_game(Game& level, std::vector<Input> inputs) {
 		move_player_tetrimino(level, 1, 0);
 	}
 	if (inputs[Command::ROTATE_CW].is_just_pressed) {
-		rotate(level.player_tetrimino);
+		rotate_player_tetrimino(level, true);
 	}
 	if (inputs[Command::HARD_DROP].is_just_pressed) {
 		while (!move_player_tetrimino(level, 0, 1)) { }
