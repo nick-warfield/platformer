@@ -79,7 +79,7 @@ void rotate_player_tetrimino(Game& level);
 void hold_tetrimino(Game& level) {
 	if (!level.held_tetrimino.has_value()) {
 		level.held_tetrimino = level.next_tetriminos.front();
-		level.next_tetriminos.pop();
+		level.next_tetriminos.pop_front();
 	}
 	std::swap(level.player_tetrimino, *level.held_tetrimino);
 }
@@ -106,7 +106,7 @@ void fill_bag(Game& level) {
 	std::shuffle(bag.begin(), bag.end(), rng);
 
 	for (auto t : bag) {
-		level.next_tetriminos.push(t);
+		level.next_tetriminos.push_back(t);
 	}
 }
 
@@ -166,7 +166,7 @@ void place_tetrimino(Game& level) {
 
 	level.player_tetrimino = level.next_tetriminos.front();
 	level.player_tetrimino.position = level.place_position;
-	level.next_tetriminos.pop();
+	level.next_tetriminos.pop_front();
 	if (level.next_tetriminos.size() < 7) {
 		fill_bag(level);
 	}
@@ -194,6 +194,17 @@ void draw_game(sf::RenderWindow& window, sf::RenderStates& states, Game& level) 
 	level.text.setString("Level: " + std::to_string(level.level));
 	level.text.setPosition(sf::Vector2f(420, 128));
 	window.draw(level.text);
+
+	level.text.setString("Next");
+	level.text.setPosition(sf::Vector2f(420, 192));
+	window.draw(level.text);
+
+	auto t = level.next_tetriminos.begin();
+	for (int i = 0; i < 3; ++i) {
+		t->position = sf::Vector2i(15, 9 + 3 * i);
+		draw_tetrimino(window, states, *t);
+		t++;
+	}
 }
 
 // this'll need to get updated to allow player input and all that

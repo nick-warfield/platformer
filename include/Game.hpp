@@ -3,7 +3,7 @@
 #include <iostream>
 #include <map>
 #include <vector>
-#include <queue>
+#include <list>
 #include <optional>
 
 #include <SFML/System.hpp>
@@ -25,7 +25,7 @@ struct Game {
 
 	Tetrimino player_tetrimino;
 	std::optional<Tetrimino> held_tetrimino;
-	std::queue<Tetrimino> next_tetriminos;
+	std::list<Tetrimino> next_tetriminos;
 
 	std::vector<Block> walls;
 	// maps row number to the blocks placed in that row
