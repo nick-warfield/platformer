@@ -54,14 +54,16 @@ bool check_collision(Game& level) {
 	return is_collision;
 }
 
-void move_player_tetrimino(Game& level, int x, int y) {
+bool move_player_tetrimino(Game& level, int x, int y) {
 	level.player_tetrimino.position.x += x;
 	level.player_tetrimino.position.y += y;
 
-	if (check_collision(level)) {
+	bool collision = check_collision(level);
+	if (collision) {
 		level.player_tetrimino.position.x -= x;
 		level.player_tetrimino.position.y -= y;
 	}
+	return collision;
 }
 
 // there's a bug where you can rotate into walls,
@@ -128,6 +130,7 @@ void clear_rows(Game& level) {
 	level.lines_cleared += lines_cleared;
 	while (level.lines_cleared >= level.level * 5) {
 		level.level++;
+		if (level.fall_speed > 100.0f) level.fall_speed -= 33.3f;
 	}
 }
 
@@ -167,9 +170,24 @@ void draw_game(sf::RenderWindow& window, sf::RenderStates& states, Game& level) 
 }
 
 // this'll need to get updated to allow player input and all that
-void update_game(Game& level, std::vector<Input> intputs) {
-	if (level.timer.getElapsedTime().asSeconds() > level.fall_speed) {
-		move_player_tetrimino(level, 0, 1);
+void update_game(Game& level, std::vector<Input> inputs) {
+	if (level.timer.getElapsedTime().asMilliseconds() > level.fall_speed) {
+		bool collision = move_player_tetrimino(level, 0, 1);
 		level.timer.restart();
+		if (collision) place_tetrimino(level);
+	}
+
+	if (inputs[Command::LEFT].is_just_pressed) {
+		move_player_tetrimino(level, -1, 0);
+	}
+	if (inputs[Command::RIGHT].is_just_pressed) {
+		move_player_tetrimino(level, 1, 0);
+	}
+	if (inputs[Command::ROTATE_CW].is_just_pressed) {
+		rotate(level.player_tetrimino);
+	}
+	if (inputs[Command::HARD_DROP].is_just_pressed) {
+		while (!move_player_tetrimino(level, 0, 1)) { }
+		place_tetrimino(level);
 	}
 }

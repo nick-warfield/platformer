@@ -52,13 +52,6 @@ int main()
 			for (auto &c : command) { get_input(c, event.key); }
         }
 
-		if (command[0].is_just_pressed)
-			move_player_tetrimino(game, -1, 0);
-		if (command[1].is_just_pressed)
-			move_player_tetrimino(game, 1, 0);
-		if (command[2].is_just_pressed)
-			rotate(game.player_tetrimino);
-
 		update_game(game, command);
 
         // Clear screen

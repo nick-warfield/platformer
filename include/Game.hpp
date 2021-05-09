@@ -17,7 +17,7 @@ struct Game {
 	int score = 0;
 	int level = 0;
 	int lines_cleared = 0;
-	float fall_speed = 1.0f;
+	float fall_speed = 1000.0f;
 	sf::Clock timer;
 
 	Tetrimino player_tetrimino;
@@ -34,7 +34,7 @@ Game make_game();
 
 bool check_collision(Game& level);
 
-void move_player_tetrimino(Game& level, int x, int y);
+bool move_player_tetrimino(Game& level, int x, int y);
 void rotate_player_tetrimino(Game& level);
 
 void hold_tetrimino(Game& level);
