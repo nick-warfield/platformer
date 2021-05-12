@@ -1,9 +1,9 @@
+#include <iostream>
 #include <vector>
 #include <random>
 #include <algorithm>
 
 #include "Game.hpp"
-#include "Tetrimino.hpp"
 
 Game make_game() {
 	int board_width = 10;
@@ -11,9 +11,11 @@ Game make_game() {
 	sf::Color wall_color = sf::Color::White;
 
 	Game game;
-	game.place_position = sf::Vector2(board_width / 2, 9);
-	game.player_tetrimino = make_tetrimino(game.place_position, 1);
 	fill_bag(game);
+	game.place_position = sf::Vector2(board_width / 2, 9);
+	game.player_tetrimino = game.next_tetriminos.front();
+	game.next_tetriminos.pop_front();
+	game.player_tetrimino.position = game.place_position;
 
 	game.font.loadFromFile("resources/Pixeboy-z8XGD.ttf");
 	game.text.setFont(game.font);
@@ -71,8 +73,6 @@ bool move_player_tetrimino(Game& level, int x, int y) {
 	return collision;
 }
 
-// there's a bug where you can rotate into walls,
-// this function should fix that
 void rotate_player_tetrimino(Game& level, bool is_cw) {
 	if (is_cw) { level.player_tetrimino.rotation += 4; }
 	else { level.player_tetrimino.rotation -= 4; }
@@ -103,14 +103,6 @@ void hold_tetrimino(Game& level) {
 	level.held_tetrimino->position = sf::Vector2i(15, 21);
 }
 
-bool is_game_over(const Game& level) {
-	for (auto &[row, blocks] : level.placed_blocks) {
-		// inverted y access + an offset for the max height
-		if (row < 10 && blocks.size() > 0) { return true; }
-	}
-	return false;
-}
-
 void fill_bag(Game& level) {
 	std::vector<Tetrimino> bag;
 	bag.push_back(make_tetrimino(sf::Vector2i(-10, -10), 0));
@@ -129,8 +121,15 @@ void fill_bag(Game& level) {
 	}
 }
 
-// scoring and level up go in here
-void clear_rows(Game& level) {
+void place_tetrimino(Game& level) {
+	// place blocks
+	auto pos = level.player_tetrimino.position;
+	for (auto b : level.player_tetrimino.blocks) {
+		b.position += pos;
+		level.placed_blocks[b.position.y].push_back(b);
+	}
+
+	// clear lines
 	int lines_cleared = 0;
 	for (auto &[_, blocks] : level.placed_blocks) {
 		if (blocks.size() >= 10) {
@@ -138,9 +137,8 @@ void clear_rows(Game& level) {
 			lines_cleared++;
 		}
 	}
-	if (lines_cleared == 0) return;
 
-	// something buggy here
+	// move rows down as needed
 	for (auto &[row, blocks] : level.placed_blocks) {
 		if (!blocks.empty()) continue;
 
@@ -168,21 +166,20 @@ void clear_rows(Game& level) {
 		level.level++;
 		if (level.fall_speed > 100.0f) level.fall_speed -= 33.3f;
 	}
-}
 
-void place_tetrimino(Game& level) {
-	auto pos = level.player_tetrimino.position;
-	for (auto b : level.player_tetrimino.blocks) {
-		b.position += pos;
-		level.placed_blocks[b.position.y].push_back(b);
+	// check game over
+	bool game_over = false;
+	for (auto &[row, blocks] : level.placed_blocks) {
+		// inverted y access + an offset for the max height
+		if (row < 10 && blocks.size() > 0) { game_over =  true; }
 	}
-	clear_rows(level);
 
-	if (is_game_over(level)) {
+	if (game_over) {
 		std::cout << "Game Over!\n";
 		return;
 	}
 
+	// grab next tetrimino
 	level.player_tetrimino = level.next_tetriminos.front();
 	level.player_tetrimino.position = level.place_position;
 	level.next_tetriminos.pop_front();
@@ -232,7 +229,6 @@ void draw_game(sf::RenderWindow& window, sf::RenderStates& states, Game& level) 
 		draw_tetrimino(window, states, *level.held_tetrimino);
 }
 
-// this'll need to get updated to allow player input and all that
 void update_game(Game& level, std::vector<Input> inputs) {
 	if (level.timer.getElapsedTime().asMilliseconds() > level.fall_speed) {
 		bool collision = move_player_tetrimino(level, 0, 1);

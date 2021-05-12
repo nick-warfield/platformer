@@ -1,6 +1,5 @@
 #pragma once
 
-#include <iostream>
 #include <map>
 #include <vector>
 #include <list>
@@ -20,7 +19,7 @@ struct Game {
 	int score = 0;
 	int level = 1;
 	int lines_cleared = 0;
-	float fall_speed = 1000.0f;
+	float fall_speed = 1000.0f;		// milliseconds
 	sf::Clock timer;
 
 	Tetrimino player_tetrimino;
@@ -35,19 +34,16 @@ struct Game {
 
 Game make_game();
 
-std::optional<sf::Vector2i> check_collision(Game& level);
-
 bool move_player_tetrimino(Game& level, int x, int y);
 void rotate_player_tetrimino(Game& level, bool is_cw);
-
 void hold_tetrimino(Game& level);
 
-bool is_game_over(const Game& level);
-
 void fill_bag(Game& level);
-void clear_rows(Game& level);
 void place_tetrimino(Game& level);
-
-void draw_game(sf::RenderWindow& window, sf::RenderStates& states, Game& level);
+std::optional<sf::Vector2i> check_collision(Game& level);
 
 void update_game(Game& level, std::vector<Input> inputs);
+void draw_game(
+		sf::RenderWindow& window,
+		sf::RenderStates& states,
+		Game& level);
