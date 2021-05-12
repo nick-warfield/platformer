@@ -30,6 +30,7 @@ struct Game {
 	std::optional<Tetrimino> held_tetrimino;
 	std::list<Tetrimino> next_tetriminos;
 
+	sf::RectangleShape max_height_line;
 	std::vector<Block> walls;
 	// maps row number to the blocks placed in that row
 	std::map<int, std::vector<Block>> placed_blocks;

@@ -22,6 +22,12 @@ Game make_game() {
 	game.text.setCharacterSize(64);
 	game.text.setFillColor(wall_color);
 
+	game.max_height_line.setSize(sf::Vector2f(384, 4));
+	game.max_height_line.setPosition(sf::Vector2f(0, 10 * 32));
+	wall_color.a = 150;
+	game.max_height_line.setFillColor(wall_color);
+	wall_color.a = 255;
+
 	// set walls
 	for (int i = 1; i < board_height + 10; ++i) {
 		game.walls.push_back(
@@ -190,6 +196,8 @@ void place_tetrimino(Game& level) {
 		if (!level.placed_blocks[i].empty()) offset.y++;
 	}
 	level.player_tetrimino.position = level.place_position - offset;
+
+	level.timer.restart();
 }
 
 void draw_game(
@@ -197,6 +205,8 @@ void draw_game(
 		sf::RenderStates& states,
 		Game& level)
 {
+	window.draw(level.max_height_line);
+
 	for (auto b : level.walls) {
 		states.transform = sf::Transform::Identity;
 		draw_block(window, states, b);
