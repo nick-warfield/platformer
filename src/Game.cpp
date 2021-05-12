@@ -40,8 +40,8 @@ Game make_game() {
 }
 
 // collision check, real simple because blocks are
-// grid and rotation locked, and the same size
-std::optional<sf::Vector2i> check_collision(Game& level) {
+// grid and rotation locked, and all the same size
+std::optional<sf::Vector2i> check_collision(const Game& level) {
 	for (auto b : level.player_tetrimino.blocks) {
 		for (auto w : level.walls) {
 			if (w.position == level.player_tetrimino.position + b.position) {
@@ -153,7 +153,6 @@ void place_tetrimino(Game& level) {
 
 	}
 
-
 	// scoring and leveling up
 	switch (lines_cleared) {
 		case 1: level.score += level.level *  800; break;
@@ -188,7 +187,11 @@ void place_tetrimino(Game& level) {
 	}
 }
 
-void draw_game(sf::RenderWindow& window, sf::RenderStates& states, Game& level) {
+void draw_game(
+		sf::RenderWindow& window,
+		sf::RenderStates& states,
+		Game& level)
+{
 	for (auto b : level.walls) {
 		states.transform = sf::Transform::Identity;
 		draw_block(window, states, b);

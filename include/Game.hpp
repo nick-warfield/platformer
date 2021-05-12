@@ -40,7 +40,7 @@ void hold_tetrimino(Game& level);
 
 void fill_bag(Game& level);
 void place_tetrimino(Game& level);
-std::optional<sf::Vector2i> check_collision(Game& level);
+std::optional<sf::Vector2i> check_collision(const Game& level);
 
 void update_game(Game& level, std::vector<Input> inputs);
 void draw_game(
