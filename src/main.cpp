@@ -58,7 +58,7 @@ int main()
 		update_game(game, command);
 
         // Clear screen
-        window.clear();
+        window.clear(sf::Color(31, 31, 46));
 
 		draw_game(window, states, game);
 

@@ -8,7 +8,7 @@
 Game make_game() {
 	int board_width = 10;
 	int board_height = 20;
-	sf::Color wall_color = sf::Color::White;
+	sf::Color wall_color = sf::Color(225, 225, 234);
 
 	Game game;
 	fill_bag(game);
@@ -20,7 +20,7 @@ Game make_game() {
 	game.font.loadFromFile("resources/Pixeboy-z8XGD.ttf");
 	game.text.setFont(game.font);
 	game.text.setCharacterSize(64);
-	game.text.setFillColor(sf::Color::White);
+	game.text.setFillColor(wall_color);
 
 	// set walls
 	for (int i = 1; i < board_height + 10; ++i) {
