@@ -1,16 +1,5 @@
 #include "Tetrimino.hpp"
 
-void rotate(Tetrimino& tetrimino) {
-	tetrimino.rotation += 4;
-	tetrimino.rotation = tetrimino.rotation % tetrimino.block_positions.size();
-
-	for (int i = 0; i < 4; i++) {
-		tetrimino.blocks[i].position
-			= tetrimino.block_positions[i + tetrimino.rotation];
-	}
-}
-
-
 void draw_tetrimino(
 		sf::RenderWindow& window,
 		sf::RenderStates& states,
@@ -72,7 +61,4 @@ Tetrimino make_tetrimino(sf::Vector2<int> position, int shape) {
 	}
 
 	return tetrimino;
-}
-Tetrimino make_random(sf::Vector2<int> position) { 
-	return make_tetrimino(position, rand() % 7);
 }

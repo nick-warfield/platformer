@@ -1,9 +1,6 @@
 #pragma once
 
-#include <iostream>
 #include <vector>
-#include <iterator>
-#include <memory>
 
 #include <SFML/System.hpp>
 #include <SFML/Graphics.hpp>
@@ -18,13 +15,9 @@ struct Tetrimino {
 	Block blocks[4];
 };
 
-void rotate(Tetrimino& tetrimino);
-
+Tetrimino make_tetrimino(sf::Vector2<int> position, int shape);
 
 void draw_tetrimino(
 		sf::RenderWindow& window,
 		sf::RenderStates& states,
 		const Tetrimino& tetrimino);
-
-Tetrimino make_tetrimino(sf::Vector2<int> position, int shape);
-Tetrimino make_random(sf::Vector2<int> position);

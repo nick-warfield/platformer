@@ -12,7 +12,7 @@ Game make_game() {
 
 	Game game;
 	game.place_position = sf::Vector2(board_width / 2, 9);
-	game.player_tetrimino = make_random(game.place_position);
+	game.player_tetrimino = make_tetrimino(game.place_position, 1);
 	fill_bag(game);
 
 	game.font.loadFromFile("resources/Pixeboy-z8XGD.ttf");
