@@ -26,6 +26,7 @@ struct Game {
 	sf::Clock soft_drop_timer;
 
 	Tetrimino player_tetrimino;
+	Tetrimino ghost_tetrimino;
 	std::optional<Tetrimino> held_tetrimino;
 	std::list<Tetrimino> next_tetriminos;
 

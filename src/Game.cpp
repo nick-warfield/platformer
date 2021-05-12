@@ -209,6 +209,17 @@ void draw_game(
 		}
 	}
 
+	level.ghost_tetrimino = level.player_tetrimino;
+	for (auto &b : level.ghost_tetrimino.blocks) {
+		for (int i = 0; i < 4; ++i) {
+			b.verticies[i].color.a = 150;
+		}
+	}
+	while (!move_player_tetrimino(level, 0, 1)) { }
+	std::swap(level.player_tetrimino.position,
+			level.ghost_tetrimino.position);
+
+	draw_tetrimino(window, states, level.ghost_tetrimino);
 	draw_tetrimino(window, states, level.player_tetrimino);
 
 	level.text.setString("Score: " + std::to_string(level.score));
