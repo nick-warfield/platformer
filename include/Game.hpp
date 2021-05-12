@@ -22,6 +22,9 @@ struct Game {
 	float fall_speed = 1000.0f;		// milliseconds
 	sf::Clock timer;
 
+	float soft_drop_speed = 75.0f;	// milliseconds
+	sf::Clock soft_drop_timer;
+
 	Tetrimino player_tetrimino;
 	std::optional<Tetrimino> held_tetrimino;
 	std::list<Tetrimino> next_tetriminos;

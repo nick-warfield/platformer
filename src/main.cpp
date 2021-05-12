@@ -30,6 +30,7 @@ int main()
 	command[Command::ROTATE_CW] = make_input(sf::Keyboard::Z);
 	command[Command::ROTATE_CCW] = make_input(sf::Keyboard::LControl);
 	command[Command::HARD_DROP] = make_input(sf::Keyboard::Space);
+	command[Command::SOFT_DROP] = make_input(sf::Keyboard::Down);
 	command[Command::HOLD] = make_input(sf::Keyboard::C);
 	command[Command::PAUSE] = make_input(sf::Keyboard::Escape);
 	command[Command::SELECT] = make_input(sf::Keyboard::Enter);

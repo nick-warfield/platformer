@@ -255,6 +255,15 @@ void update_game(Game& level, std::vector<Input> inputs) {
 		while (!move_player_tetrimino(level, 0, 1)) { }
 		place_tetrimino(level);
 	}
+	if (inputs[Command::SOFT_DROP].is_just_pressed) {
+		level.soft_drop_timer.restart();
+	}
+	if (inputs[Command::SOFT_DROP].is_pressed
+			&& level.soft_drop_timer.getElapsedTime().asMilliseconds()
+			> level.soft_drop_speed) {
+		move_player_tetrimino(level, 0, 1);
+		level.soft_drop_timer.restart();
+	}
 	if (inputs[Command::HOLD].is_just_pressed) {
 		hold_tetrimino(level);
 	}

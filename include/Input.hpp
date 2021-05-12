@@ -21,6 +21,7 @@ enum Command {
 	ROTATE_CW,
 	ROTATE_CCW,
 	HARD_DROP,
+	SOFT_DROP,
 	HOLD,
 	PAUSE,
 	SELECT
