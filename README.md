@@ -3,4 +3,4 @@ TODO: Let's make Tetris instead!
 * Implement Menu
 * Implement Ghost Block
 * Implement Game Over Screen
-* Adjust Place position when stack gets too high
+* Fix bug where swaping hold blocks can put a block through a wall

@@ -12,7 +12,7 @@ Game make_game() {
 
 	Game game;
 	fill_bag(game);
-	game.place_position = sf::Vector2(board_width / 2, 9);
+	game.place_position = sf::Vector2(6, 9);
 	game.player_tetrimino = game.next_tetriminos.front();
 	game.next_tetriminos.pop_front();
 	game.player_tetrimino.position = game.place_position;
@@ -180,11 +180,16 @@ void place_tetrimino(Game& level) {
 
 	// grab next tetrimino
 	level.player_tetrimino = level.next_tetriminos.front();
-	level.player_tetrimino.position = level.place_position;
 	level.next_tetriminos.pop_front();
 	if (level.next_tetriminos.size() < 7) {
 		fill_bag(level);
 	}
+
+	sf::Vector2i offset(0, 0);
+	for (int i = 13; i > 0; --i) {
+		if (!level.placed_blocks[i].empty()) offset.y++;
+	}
+	level.player_tetrimino.position = level.place_position - offset;
 }
 
 void draw_game(
