@@ -107,6 +107,18 @@ void hold_tetrimino(Game& level) {
 	std::swap(level.player_tetrimino, *level.held_tetrimino);
 	level.player_tetrimino.position = level.held_tetrimino->position;
 	level.held_tetrimino->position = sf::Vector2i(15, 21);
+
+	auto col = check_collision(level);
+	while (col) {
+		auto dir = level.player_tetrimino.position - *col;
+		dir.x = std::min( 1, dir.x);
+		dir.x = std::max(-1, dir.x);
+		dir.y = std::min( 1, dir.y);
+		dir.y = std::max(-1, dir.y);
+		level.player_tetrimino.position += dir;
+		std::cout << dir.x << ", " << dir.y << std::endl;
+		col = check_collision(level);
+	}
 }
 
 void fill_bag(Game& level) {
