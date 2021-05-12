@@ -20,6 +20,7 @@ int main()
         return EXIT_FAILURE;
 	}
 	music.setVolume(50);
+	music.setLoop(true);
     music.play();
 
 	sf::Clock timer;
