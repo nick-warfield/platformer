@@ -5,7 +5,6 @@ OPT = O2
 CFLAGS = -std=c++17 -$(OPT) -Wall -Wextra -Wno-missing-braces -DDEBUG
 LDFLAGS = -lsfml-graphics -lsfml-window -lsfml-audio -lsfml-system
 
-LIB_DIR = lib
 INCLUDE_DIR = include
 SOURCE_DIR = src
 OBJECT_DIR = src/obj
@@ -13,7 +12,7 @@ RESOURCE_DIR = resources
 BUILD_DIR = build
 TEST_DIR = tests
 
-CFLAGS += -I$(INCLUDE_DIR) -isystem $(LIB_DIR)
+CFLAGS += -I$(INCLUDE_DIR)
 
 HEADERS = $(wildcard *, $(INCLUDE_DIR)/*.hpp)
 SOURCE = $(wildcard *, $(SOURCE_DIR)/*.cpp)
