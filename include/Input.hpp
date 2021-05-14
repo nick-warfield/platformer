@@ -18,6 +18,8 @@ void get_input(Input& input, const sf::Event::KeyEvent& key_event);
 enum Command {
 	LEFT,
 	RIGHT,
+	DOWN,
+	UP,
 	ROTATE_CW,
 	ROTATE_CCW,
 	HARD_DROP,
