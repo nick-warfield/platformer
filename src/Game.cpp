@@ -42,6 +42,8 @@ Game make_game() {
 				make_block(wall_color, sf::Vector2i(i, board_height + 10)));
 	}
 
+	game.menu = make_menu();
+
 	return game;
 }
 
@@ -192,7 +194,7 @@ void place_tetrimino(Game& level) {
 	}
 
 	if (game_over) {
-		std::cout << "Game Over!\n";
+		make_game_over_menu(level.menu);
 		return;
 	}
 
@@ -268,9 +270,44 @@ void draw_game(
 	window.draw(level.text);
 	if (level.held_tetrimino.has_value())
 		draw_tetrimino(window, states, *level.held_tetrimino);
+
+	if (level.menu.is_active)
+		draw_menu(window, states, level.menu);
 }
 
 void update_game(Game& level, std::vector<Input> inputs) {
+	if (level.menu.is_active) {
+		auto selection = update_menu(level.menu, inputs);
+		if (selection == std::nullopt) { return; }
+		switch (*selection) {
+			case MenuSelection::RESUME:
+				level.menu.is_active = false;
+				break;
+
+			case MenuSelection::NEW_GAME:
+				level.placed_blocks.clear();
+				level.score = 0;
+				level.level = 1;
+				level.lines_cleared = 0;
+				level.fall_speed = 1000.0f;
+				level.menu.is_active = false;
+				level.timer.restart();
+				level.next_tetriminos.clear();
+				fill_bag(level);
+				level.player_tetrimino = level.next_tetriminos.front();
+				level.player_tetrimino.position = level.place_position;
+				level.next_tetriminos.pop_front();
+				level.held_tetrimino = std::nullopt;
+				break;
+
+			case MenuSelection::QUIT:
+				level.should_quit = true;
+				break;
+		};
+
+		return;
+	}
+
 	if (level.timer.getElapsedTime().asMilliseconds() > level.fall_speed) {
 		bool collision = move_player_tetrimino(level, 0, 1);
 		level.timer.restart();
@@ -304,5 +341,8 @@ void update_game(Game& level, std::vector<Input> inputs) {
 	}
 	if (inputs[Command::HOLD].is_just_pressed) {
 		hold_tetrimino(level);
+	}
+	if (inputs[Command::PAUSE].is_just_pressed) {
+		make_pause_menu(level.menu);
 	}
 }

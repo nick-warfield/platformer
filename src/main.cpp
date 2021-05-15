@@ -6,7 +6,6 @@
 
 #include "Game.hpp"
 #include "Tetrimino.hpp"
-#include "Block.hpp"
 #include "Input.hpp"
 
 int main()
@@ -21,13 +20,15 @@ int main()
 	}
 	music.setVolume(50);
 	music.setLoop(true);
-    music.play();
+    //music.play();
 
 	sf::Clock timer;
 	std::vector<Input> command;
-	command.resize(8);
+	command.resize(11);
 	command[Command::LEFT] = make_input(sf::Keyboard::Left);
 	command[Command::RIGHT] = make_input(sf::Keyboard::Right);
+	command[Command::DOWN] = make_input(sf::Keyboard::Down);
+	command[Command::UP] = make_input(sf::Keyboard::Up);
 	command[Command::ROTATE_CW] = make_input(sf::Keyboard::Z);
 	command[Command::ROTATE_CCW] = make_input(sf::Keyboard::LControl);
 	command[Command::HARD_DROP] = make_input(sf::Keyboard::Space);
@@ -36,21 +37,24 @@ int main()
 	command[Command::PAUSE] = make_input(sf::Keyboard::Escape);
 	command[Command::SELECT] = make_input(sf::Keyboard::Enter);
 
-	Game game = make_game();
 	sf::RenderStates states = sf::RenderStates::Default;
+	Game game = make_game();
+
+	// menu font is getting deleted anytime game is accessed
+	// this fixes that for some reason
+	game.menu.title.setFont(game.font);
+	game.menu.text.setFont(game.font);
+
 
     // Start the game loop
     while (window.isOpen())
     {
-        // Process events
 		for (auto &c : command) { update_input(c); }
 
         sf::Event event;
         while (window.pollEvent(event))
         {
-            // Close window: exit
-            if (event.type == sf::Event::Closed
-					|| event.key.code == sf::Keyboard::Escape)
+            if (event.type == sf::Event::Closed || game.should_quit)
                 window.close();
 
 			for (auto &c : command) { get_input(c, event.key); }
@@ -58,12 +62,8 @@ int main()
 
 		update_game(game, command);
 
-        // Clear screen
         window.clear(sf::Color(31, 31, 46));
-
 		draw_game(window, states, game);
-
-        // Update the window
         window.display();
     }
     return EXIT_SUCCESS;

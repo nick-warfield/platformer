@@ -1,4 +1,5 @@
 #include "Menu.hpp"
+#include <iostream>
 #include <algorithm>
 
 Menu make_menu() {
@@ -8,7 +9,11 @@ Menu make_menu() {
 	menu.selection = 0;
 	menu.is_active = true;
 
-	menu.font.loadFromFile("resources/Pixeboy-z8XGD.ttf");
+	if (!menu.font.loadFromFile("resources/Pixeboy-z8XGD.ttf"))
+		std::cout << "Failed to load menu font\n";
+	else
+		std::cout << "Successfully loaded menu font\n";
+
 	menu.text_color = sf::Color(225, 225, 234);
 	menu.background_color = sf::Color(31, 31, 46);
 
@@ -38,6 +43,27 @@ Menu make_menu() {
 	return menu;
 }
 
+void make_pause_menu(Menu& menu) {
+	menu.menu_items.clear();
+	menu.menu_items.push_back(MenuSelection::RESUME);
+	menu.menu_items.push_back(MenuSelection::NEW_GAME);
+	menu.menu_items.push_back(MenuSelection::QUIT);
+	menu.selection = 0;
+	menu.is_active = true;
+	menu.title.setString("PAUSE");
+	menu.text.setString("Resume\nNew Game\nQuit");
+}
+
+void make_game_over_menu(Menu& menu) {
+	menu.menu_items.clear();
+	menu.menu_items.push_back(MenuSelection::NEW_GAME);
+	menu.menu_items.push_back(MenuSelection::QUIT);
+	menu.selection = 0;
+	menu.is_active = true;
+	menu.title.setString("GAME OVER");
+	menu.text.setString("New Game\nQuit");
+}
+
 std::optional<MenuSelection> update_menu(
 		Menu& menu,
 		std::vector<Input> inputs)
@@ -53,7 +79,7 @@ std::optional<MenuSelection> update_menu(
 		menu.selection = std::max(menu.selection, 0);
 	}
 	if (inputs[Command::SELECT].is_just_pressed) {
-		return std::optional<MenuSelection>(menu.menu_items[menu.selection]);
+		return menu.menu_items[menu.selection];
 	}
 
 	menu.selector.setPosition(

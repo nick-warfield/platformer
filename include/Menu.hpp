@@ -32,7 +32,13 @@ struct Menu {
 };
 
 Menu make_menu();
-std::optional<MenuSelection> update_menu(Menu& menu, std::vector<Input>);
+void make_pause_menu(Menu& menu);
+void make_game_over_menu(Menu& menu);
+
+std::optional<MenuSelection> update_menu(
+		Menu& menu,
+		std::vector<Input>);
+
 void draw_menu(
 		sf::RenderWindow& window,
 		sf::RenderStates& states,
