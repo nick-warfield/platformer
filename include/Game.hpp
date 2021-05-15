@@ -4,6 +4,7 @@
 #include <vector>
 #include <list>
 #include <optional>
+#include <random>
 
 #include <SFML/System.hpp>
 #include <SFML/Graphics.hpp>
@@ -11,11 +12,15 @@
 #include "Block.hpp"
 #include "Tetrimino.hpp"
 #include "Input.hpp"
+#include "Menu.hpp"
 
 struct Game {
 	sf::Font font;
 	sf::Text text;
 
+	Menu menu;
+	std::default_random_engine rng;
+	bool should_quit = false;
 	int score = 0;
 	int level = 1;
 	int lines_cleared = 0;

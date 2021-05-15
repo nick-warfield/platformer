@@ -1,6 +1,5 @@
 #include <iostream>
 #include <vector>
-#include <random>
 #include <algorithm>
 
 #include "Game.hpp"
@@ -11,7 +10,10 @@ Game make_game() {
 	sf::Color wall_color = sf::Color(225, 225, 234);
 
 	Game game;
+	auto rd = std::random_device();
+	game.rng = std::default_random_engine(rd());
 	fill_bag(game);
+
 	game.place_position = sf::Vector2(6, 9);
 	game.player_tetrimino = game.next_tetriminos.front();
 	game.next_tetriminos.pop_front();
@@ -133,8 +135,7 @@ void fill_bag(Game& level) {
 	bag.push_back(make_tetrimino(sf::Vector2i(-10, -10), 5));
 	bag.push_back(make_tetrimino(sf::Vector2i(-10, -10), 6));
 
-	auto rng = std::default_random_engine();
-	std::shuffle(bag.begin(), bag.end(), rng);
+	std::shuffle(bag.begin(), bag.end(), level.rng);
 
 	for (auto t : bag) {
 		level.next_tetriminos.push_back(t);
