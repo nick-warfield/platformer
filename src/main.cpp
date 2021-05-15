@@ -20,7 +20,7 @@ int main()
 	}
 	music.setVolume(50);
 	music.setLoop(true);
-    //music.play();
+    music.play();
 
 	sf::Clock timer;
 	std::vector<Input> command;
