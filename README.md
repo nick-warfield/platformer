@@ -1,3 +1,1 @@
-TODO: Let's make Tetris instead!
-* Add sfx
-* Fix looping music hiccup
+A complete implementation of Tetris, just call make and play!
